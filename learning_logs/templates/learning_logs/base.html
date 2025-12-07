@@ -1,0 +1,64 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Learning Log</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
+  <body>
+    <!-- Статическая навигационная панель -->
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <!-- Кнопка для мобильного меню -->
+          <button type="button" class="navbar-toggle collapsed"
+                  data-toggle="collapse" data-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+          </button>
+          <!-- Логотип/бренд -->
+          <a class="navbar-brand" href="{% url 'learning_logs:index' %}">
+            Learning Log
+          </a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <!-- Левое меню -->
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'learning_logs:topics' %}">Topics</a></li>
+          </ul>
+
+          <!-- Правое меню -->
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+              <li><a>Hello, {{ user.username }}.</a></li>
+              <li>
+                <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link navbar-btn">Log out</button>
+                </form>
+              </li>
+            {% else %}
+              <li><a href="{% url 'users:register' %}">Register</a></li>
+              <li><a href="{% url 'users:login' %}">Log in</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Основной контейнер -->
+    <div class="container">
+      <div class="page-header">
+        {% block header %}{% endblock header %}
+      </div>
+      <div>
+        {% block content %}{% endblock content %}
+      </div>
+    </div> <!-- /container -->
+  </body>
+</html>
